@@ -1,9 +1,14 @@
 package com.home.server1queue.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class TaskResultContainer {
+/**
+ * Container with task and its result.
+ * It can be accessed from different threads using the lock.
+ */
+public class TaskResultContainer implements Cloneable, Serializable {
 
     private Task task;
     private Result result;
@@ -61,5 +66,14 @@ public class TaskResultContainer {
                 ", result=" + result +
                 ", lock=" + lock +
                 '}';
+    }
+
+    @Override
+    public TaskResultContainer clone() {
+        try {
+            return (TaskResultContainer) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return new TaskResultContainer(this.task, this.result);
+        }
     }
 }

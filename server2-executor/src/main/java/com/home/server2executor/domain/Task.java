@@ -3,6 +3,9 @@ package com.home.server2executor.domain;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Task domain model.
+ */
 public class Task implements Cloneable {
 
     public enum Type {

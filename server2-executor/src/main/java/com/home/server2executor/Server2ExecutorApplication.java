@@ -27,9 +27,6 @@ public class Server2ExecutorApplication {
                 .run(args);
     }
 
-    @Value("${refresh.delay}")
-    private Integer refreshDelay;
-
     /**
      * Run fetching new task process in the main thread.
      * When new task received it execution started in separate thread.
@@ -41,7 +38,8 @@ public class Server2ExecutorApplication {
     @Bean
     public CommandLineRunner run(TaskService taskService,
                                  TaskExecutorService taskExecutorService,
-                                 ExecutorService executorService) {
+                                 ExecutorService executorService,
+                                 @Value("${refresh.delay}") Integer refreshDelay) {
         return args -> {
             while (true) {
                 Optional<Task> task;

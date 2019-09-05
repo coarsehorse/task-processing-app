@@ -71,8 +71,6 @@ public class TaskController {
         TaskResultContainer trc = resultRepository.get(task.hashCode());
         if (trc == null) {
             logger.error("No TaskResultContainer found for task " + task);
-            logger.error("resultRepository: " + resultRepository);
-            logger.error("task.hashCode(): " + task.hashCode());
             return;
         }
 

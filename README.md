@@ -1,4 +1,8 @@
-# MSM-Solutions-Test
+# TaskProcessingApp
+App contains two servers: queue and executor.
+Queue server interacts with client via http requests.
+Executor server continuously requests the new tasks from queue server and performs them.
+Everything happens asynchronously.
 
 **Used technologies:**
 * Java
@@ -8,6 +12,7 @@
 
 **Task description:**
 <p align="center"><img src="img/task-desk-1.jpg"></p>
+
 **Services relationship diagram:**
 <p align="center"><img src="img/task-desk-2.jpg"></p>
 

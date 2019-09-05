@@ -1,8 +1,12 @@
 package com.home.server1queue.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Product implements Cloneable {
+/**
+ * Product domain model.
+ */
+public class Product implements Cloneable, Serializable {
 
     private Long id;
     private String title;

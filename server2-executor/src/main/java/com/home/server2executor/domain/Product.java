@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
- * Product domain model
+ * Product domain model.
  */
 @Entity
 @Table(name = "products")

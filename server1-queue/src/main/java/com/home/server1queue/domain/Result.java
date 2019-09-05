@@ -1,11 +1,12 @@
 package com.home.server1queue.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * The result of task execution.
  */
-public class Result {
+public class Result implements Cloneable, Serializable {
 
     private Task task;
     private Object resultData;
@@ -80,5 +81,15 @@ public class Result {
                 ", isSuccessful=" + isSuccessful +
                 ", isError=" + isError +
                 '}';
+    }
+
+    @Override
+    public Result clone() {
+        try {
+            return (Result) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return new Result(this.task,
+                    this.resultData, this.isSuccessful, this.isError);
+        }
     }
 }

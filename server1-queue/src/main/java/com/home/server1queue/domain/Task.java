@@ -1,9 +1,13 @@
 package com.home.server1queue.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Task implements Cloneable {
+/**
+ * Task domain model.
+ */
+public class Task implements Cloneable, Serializable {
 
     public enum Type {
         GetAll,
