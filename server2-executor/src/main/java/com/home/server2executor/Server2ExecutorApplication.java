@@ -20,8 +20,11 @@ import java.util.concurrent.ExecutorService;
 @SpringBootApplication
 public class Server2ExecutorApplication {
 
-    private Logger logger =
-            LoggerFactory.getLogger(Server2ExecutorApplication.class);
+    private Logger logger;
+
+    public Server2ExecutorApplication() {
+        this.logger = LoggerFactory.getLogger(Server2ExecutorApplication.class);
+    }
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(Server2ExecutorApplication.class)

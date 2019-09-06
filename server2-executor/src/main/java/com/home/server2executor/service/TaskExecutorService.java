@@ -4,8 +4,6 @@ import com.home.server2executor.domain.Product;
 import com.home.server2executor.domain.Result;
 import com.home.server2executor.domain.Task;
 import com.home.server2executor.repositories.ProductRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +12,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TaskExecutorService {
-
-    private Logger logger =
-            LoggerFactory.getLogger(TaskService.class);
 
     private ProductRepository productRepository;
 

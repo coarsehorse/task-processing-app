@@ -2,9 +2,6 @@ package com.home.server2executor.service;
 import com.home.server2executor.domain.Result;
 import com.home.server2executor.domain.Task;
 import com.home.server2executor.resttemplate.RestTemplateResponseErrorHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -17,20 +14,15 @@ import java.util.Optional;
 @Service
 public class TaskService {
 
-    private Logger logger =
-            LoggerFactory.getLogger(TaskService.class);
-
+    @Value("${queue.url}")
+    private String queueUrl;
     private RestTemplate restTemplate;
 
-    @Autowired
     public TaskService(RestTemplateBuilder restTemplateBuilder) {
         restTemplate = restTemplateBuilder
                 .errorHandler(new RestTemplateResponseErrorHandler())
                 .build();
     }
-
-    @Value("${queue.url}")
-    private String queueUrl;
 
     /**
      * Get a task from queue server.
