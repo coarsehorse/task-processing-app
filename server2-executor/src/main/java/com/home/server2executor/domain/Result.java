@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * The result of task execution.
  */
-public class Result implements Cloneable, Serializable {
+public class Result implements Serializable {
 
     private Task task;
     private Object resultData;
@@ -23,6 +23,10 @@ public class Result implements Cloneable, Serializable {
         this.resultData = resultData;
         this.isSuccessful = isSuccessful;
         this.isError = isError;
+    }
+
+    public Result(Result that) {
+        this(new Task(that.getTask()), that.getResultData(), that.isSuccessful(), that.isError());
     }
 
     public Task getTask() {
@@ -81,15 +85,5 @@ public class Result implements Cloneable, Serializable {
                 ", isSuccessful=" + isSuccessful +
                 ", isError=" + isError +
                 '}';
-    }
-
-    @Override
-    public Result clone() {
-        try {
-            return (Result) super.clone();
-        } catch (CloneNotSupportedException e) {
-            return new Result(this.task,
-                    this.resultData, this.isSuccessful, this.isError);
-        }
     }
 }

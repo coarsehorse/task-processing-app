@@ -52,6 +52,7 @@ public class Server2ExecutorApplication {
                 executorService.execute(() -> {
                     Result result = taskExecutorService.executeTask(taskObj);
                     taskService.putAResult(result);
+                    logger.info("Putted new result " + result);
                 });
             }
         };

@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Product domain model.
  */
-public class Product implements Cloneable, Serializable {
+public class Product implements Serializable {
 
     private Long id;
     private String title;
@@ -21,6 +21,10 @@ public class Product implements Cloneable, Serializable {
         this.title = title;
         this.description = description;
         this.price = price;
+    }
+
+    public Product(Product that) {
+        this(that.getId(), that.getTitle(), that.getDescription(), that.getPrice());
     }
 
     public Long getId() {
@@ -79,14 +83,5 @@ public class Product implements Cloneable, Serializable {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 '}';
-    }
-
-    @Override
-    public Product clone() {
-        try {
-            return (Product) super.clone();
-        } catch (CloneNotSupportedException e) {
-            return new Product(this.id, this.title, this.description, this.price);
-        }
     }
 }

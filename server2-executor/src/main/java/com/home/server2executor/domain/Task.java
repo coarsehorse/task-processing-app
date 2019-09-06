@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * Task domain model.
  */
-public class Task implements Cloneable, Serializable {
+public class Task implements Serializable {
 
     public enum Type {
         GetAll,
@@ -33,6 +33,11 @@ public class Task implements Cloneable, Serializable {
         this.product = product;
         this.dateOfReceipt = dateOfReceipt;
         done = false;
+    }
+
+    public Task(Task that) {
+        this(that.getTaskType(), new Product(that.getProduct()),
+                new Date(that.getDateOfReceipt().getTime()));
     }
 
     public Type getTaskType() {
@@ -113,14 +118,5 @@ public class Task implements Cloneable, Serializable {
                 ", product=" + product +
                 ", dateOfReceipt=" + dateOfReceipt +
                 '}';
-    }
-
-    @Override
-    public Task clone() {
-        try {
-            return (Task) super.clone();
-        } catch (CloneNotSupportedException e) {
-            return new Task(this.taskType, this.product, this.dateOfReceipt);
-        }
     }
 }
