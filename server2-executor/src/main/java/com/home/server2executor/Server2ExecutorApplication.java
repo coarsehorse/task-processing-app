@@ -12,6 +12,8 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.ResourceAccessException;
+
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
@@ -43,8 +45,13 @@ public class Server2ExecutorApplication {
         return args -> {
             while (true) {
                 Optional<Task> task;
-                for (task = Optional.empty(); !task.isPresent();
-                     task = taskService.getATask()) {
+                for (task = Optional.empty(); !task.isPresent();) {
+                    try {
+                        task = taskService.getATask();
+                    } catch (ResourceAccessException ignore) {
+                        // If queue server is temporarily
+                        // unavailable continue to ping it
+                    }
                     Thread.sleep(refreshDelay);
                 }
                 Task taskObj = task.get();
