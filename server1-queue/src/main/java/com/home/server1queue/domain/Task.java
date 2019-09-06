@@ -1,5 +1,6 @@
 package com.home.server1queue.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -19,16 +20,19 @@ public class Task implements Cloneable, Serializable {
     private Type taskType;
     private Product product;
     private Date dateOfReceipt;
-
+    @JsonIgnore
+    private boolean done;
 
     public Task() {
         dateOfReceipt = new Date();
+        done = false;
     }
 
     public Task(Type taskType, Product product, Date dateOfReceipt) {
         this.taskType = taskType;
         this.product = product;
         this.dateOfReceipt = dateOfReceipt;
+        done = false;
     }
 
     public Type getTaskType() {
@@ -53,6 +57,38 @@ public class Task implements Cloneable, Serializable {
 
     public void setDateOfReceipt(Date dateOfReceipt) {
         this.dateOfReceipt = dateOfReceipt;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    /**
+     * Wait for the result of current task
+     * using two steps: inner flag <code>done</code> and
+     * <code>wait()</code> method.
+     */
+    public synchronized void waitForResult() {
+        while (!this.done) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt(); // preserve interruption status
+            }
+        }
+    }
+
+    /**
+     * Notify waiting thread about task result.
+     */
+    public synchronized void notifyAboutResult() {
+        this.done = true;
+        notify();
     }
 
     @Override
