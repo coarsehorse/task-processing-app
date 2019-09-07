@@ -12,11 +12,14 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class AppConfig {
 
-    @Value("${async.level.min}")
     private Integer asyncLevelMin;
-
-    @Value("${async.level.max}")
     private Integer asyncLevelMax;
+
+    public AppConfig(@Value("${async.level.min}") Integer asyncLevelMin,
+                     @Value("${async.level.max}") Integer asyncLevelMax) {
+        this.asyncLevelMin = asyncLevelMin;
+        this.asyncLevelMax = asyncLevelMax;
+    }
 
     @Bean
     public ExecutorService executorService() {

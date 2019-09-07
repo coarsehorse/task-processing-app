@@ -3,7 +3,7 @@ package com.home.server2executor;
 import com.home.server2executor.domain.Result;
 import com.home.server2executor.domain.Task;
 import com.home.server2executor.service.TaskExecutorService;
-import com.home.server2executor.service.TaskService;
+import com.home.server2executor.service.QueueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,21 +36,23 @@ public class Server2ExecutorApplication {
      * Run fetching new task process in the main thread.
      * When new task received it execution started in separate thread.
      *
-     * @param taskService injected task service.
+     * @param queueService injected task service.
      * @param taskExecutorService injected task executor service.
      * @return Spring mechanism to run something on app start.
      */
     @Bean
-    public CommandLineRunner run(TaskService taskService,
+    public CommandLineRunner run(QueueService queueService,
                                  TaskExecutorService taskExecutorService,
                                  ExecutorService executorService,
                                  @Value("${refresh.delay}") Integer refreshDelay) {
         return args -> {
             while (true) {
-                Optional<Task> task;
-                for (task = Optional.empty(); !task.isPresent();) {
+                Optional<Task> task = Optional.empty();
+
+                // Wait for the new task from queue server
+                while (!task.isPresent()) {
                     try {
-                        task = taskService.getATask();
+                        task = queueService.getATask();
                     } catch (ResourceAccessException ignore) {
                         // If queue server is temporarily
                         // unavailable continue to ping it
@@ -59,9 +61,11 @@ public class Server2ExecutorApplication {
                 }
                 Task taskObj = task.get();
                 logger.info("Received new task " + taskObj);
+
+                // Execute task asynchronously
                 executorService.execute(() -> {
                     Result result = taskExecutorService.executeTask(taskObj);
-                    taskService.putAResult(result);
+                    queueService.putAResult(result);
                     logger.info("Putted new result " + result);
                 });
             }

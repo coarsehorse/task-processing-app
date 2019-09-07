@@ -11,17 +11,21 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service for interaction with queue server.
+ */
 @Service
-public class TaskService {
+public class QueueService {
 
-    @Value("${queue.url}")
     private String queueUrl;
     private RestTemplate restTemplate;
 
-    public TaskService(RestTemplateBuilder restTemplateBuilder) {
-        restTemplate = restTemplateBuilder
+    public QueueService(RestTemplateBuilder restTemplateBuilder,
+                        @Value("${queue.url}") String queueUrl) {
+        this.restTemplate = restTemplateBuilder
                 .errorHandler(new RestTemplateResponseErrorHandler())
                 .build();
+        this.queueUrl = queueUrl;
     }
 
     /**
