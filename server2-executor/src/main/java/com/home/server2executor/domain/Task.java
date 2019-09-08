@@ -1,6 +1,10 @@
 package com.home.server2executor.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.lang.Nullable;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -17,9 +21,15 @@ public class Task implements Serializable {
         Remove
     }
 
+    @NotNull
     private Type taskType;
+
+    @Valid
     private Product product;
+
+    @Nullable
     private Date dateOfReceipt;
+
     @JsonIgnore
     private boolean done;
 

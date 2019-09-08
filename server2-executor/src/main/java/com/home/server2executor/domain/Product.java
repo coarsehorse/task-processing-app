@@ -1,5 +1,7 @@
 package com.home.server2executor.domain;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,6 +22,7 @@ public class Product implements Serializable {
             name = "products_generator",
             sequenceName = "products_sequence"
     )
+    @Nullable
     private Long id;
 
     @NotBlank

@@ -2,8 +2,8 @@ package com.home.server2executor;
 
 import com.home.server2executor.domain.Result;
 import com.home.server2executor.domain.Task;
-import com.home.server2executor.service.TaskExecutorService;
 import com.home.server2executor.service.QueueService;
+import com.home.server2executor.service.TaskExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,6 +71,4 @@ public class Server2ExecutorApplication {
             }
         };
     }
-
-
 }

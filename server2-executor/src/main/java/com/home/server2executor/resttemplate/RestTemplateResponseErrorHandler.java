@@ -19,15 +19,13 @@ public class RestTemplateResponseErrorHandler
     @Override
     public boolean hasError(ClientHttpResponse clientHttpResponse)
             throws IOException {
-        return (clientHttpResponse.getStatusCode().series()
-                == HttpStatus.Series.SERVER_ERROR);
+        return (clientHttpResponse.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR);
     }
 
     @Override
     public void handleError(ClientHttpResponse clientHttpResponse)
             throws IOException {
-        if (clientHttpResponse.getStatusCode().series()
-                == HttpStatus.Series.SERVER_ERROR) {
+        if (clientHttpResponse.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR) {
             throw new HttpServerErrorException(clientHttpResponse.getStatusCode());
         }
     }

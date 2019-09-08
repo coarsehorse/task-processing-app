@@ -2,9 +2,11 @@ package com.home.server1queue.repositories;
 
 import com.home.server1queue.domain.Task;
 import org.springframework.stereotype.Repository;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import java.util.Stack;
-
+/**
+ * Task queue storage.
+ */
 @Repository
-public class TaskRepository<T> extends Stack<T> {
+public class TaskRepository extends ConcurrentLinkedQueue<Task> {
 }

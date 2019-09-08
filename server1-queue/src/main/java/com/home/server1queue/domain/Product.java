@@ -1,5 +1,9 @@
 package com.home.server1queue.domain;
 
+
+import org.springframework.lang.Nullable;
+
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,9 +12,18 @@ import java.util.Objects;
  */
 public class Product implements Serializable {
 
+    @Nullable
     private Long id;
+
+    @Size(min = 5, max = 150)
+    @Nullable
     private String title;
+
+    @Size(min = 5, max = 500)
+    @Nullable
     private String description;
+
+    @Nullable
     private Float price;
 
     public Product() {

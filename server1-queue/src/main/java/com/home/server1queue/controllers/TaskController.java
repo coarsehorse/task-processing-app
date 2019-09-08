@@ -13,49 +13,48 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.AbstractMap;
-import java.util.EmptyStackException;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
 public class TaskController {
 
-    private TaskRepository<Task> taskRepository;
+    private TaskRepository taskRepository;
     private ResultRepository resultRepository;
     private Logger logger;
 
-    public TaskController(TaskRepository<Task> taskRepository,
-                          ResultRepository resultRepository) {
+    public TaskController(TaskRepository taskRepository, ResultRepository resultRepository) {
         this.taskRepository = taskRepository;
         this.resultRepository = resultRepository;
         this.logger = LoggerFactory.getLogger(TaskController.class);
     }
 
     @PostMapping("/execute")
-    public ResponseEntity<Result> execute(@RequestBody Task task) {
-        logger.info("Received /execute request, task " + task);
+    public ResponseEntity<Result> execute(@Valid @RequestBody Task task) {
+        logger.info("Received /execute request, task " + task.hashCode() + " " + task);
 
         // Share task/result pair
-        resultRepository.put(task.hashCode(),
-                new AbstractMap.SimpleEntry<>(task, null));
+        resultRepository.put(task.hashCode(), new AbstractMap.SimpleEntry<>(task, null));
 
         // Add task to the tasks queue
-        taskRepository.push(task);
+        taskRepository.add(task);
 
         // Wait until executor server returns the result
         task.waitForResult();
 
         Result result = resultRepository.get(task.hashCode()).getValue();
         if (result == null) {
-            String errorMessage = "Task " + task + " notified about result, but no result found";
+            String errorMessage = "Task " + task.hashCode()
+                    + " " + task + " notified about result, but no result found";
             logger.error(errorMessage);
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new Result(task, errorMessage, false, true));
         }
 
-        logger.info("Successfully executed task " + task);
+        logger.info("Successfully executed task " + task.hashCode() + " " + task);
 
         return ResponseEntity.ok(result);
     }
@@ -64,17 +63,11 @@ public class TaskController {
     public ResponseEntity<Task> getATask() {
         logger.debug("Received /getATask request");
 
-        Optional<Task> taskToProcess = Optional.empty();
-        try {
-            taskToProcess = Optional.of(taskRepository.pop());
-        } catch (EmptyStackException ignored) {
-        }
-
-        return ResponseEntity.of(taskToProcess);
+        return ResponseEntity.of(Optional.ofNullable(taskRepository.poll()));
     }
 
     @PostMapping("/putAResult")
-    public void putAResult(@RequestBody Result result) {
+    public void putAResult(@Valid @RequestBody Result result) {
         logger.info("Received /putAResult request, result " + result);
 
         Task task = result.getTask();

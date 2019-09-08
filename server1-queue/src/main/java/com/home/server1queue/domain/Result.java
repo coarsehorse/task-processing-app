@@ -1,5 +1,7 @@
 package com.home.server1queue.domain;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,10 +10,17 @@ import java.util.Objects;
  */
 public class Result implements Serializable {
 
+    @Valid
     private Task task;
+
+    @NotNull
     private Object resultData;
-    private boolean isSuccessful;
-    private boolean isError;
+
+    @NotNull
+    private Boolean isSuccessful;
+
+    @NotNull
+    private Boolean isError;
 
     public Result() {
         this.isError = true;
