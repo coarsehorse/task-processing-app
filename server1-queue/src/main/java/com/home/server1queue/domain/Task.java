@@ -30,6 +30,12 @@ public class Task implements Serializable {
     @Nullable
     private Date dateOfReceipt;
 
+    @Nullable
+    private Integer pageIndex;
+
+    @Nullable
+    private Integer pageSize;
+
     @JsonIgnore
     private boolean done;
 
@@ -38,7 +44,8 @@ public class Task implements Serializable {
         done = false;
     }
 
-    public Task(Type taskType, Product product, Date dateOfReceipt) {
+    public Task(Type taskType, Product product,
+                Date dateOfReceipt, Integer pageIndex, Integer pageSize) {
         this.taskType = taskType;
         this.product = product;
         this.dateOfReceipt = dateOfReceipt;
@@ -47,7 +54,7 @@ public class Task implements Serializable {
 
     public Task(Task that) {
         this(that.getTaskType(), new Product(that.getProduct()),
-                new Date(that.getDateOfReceipt().getTime()));
+                new Date(that.getDateOfReceipt().getTime()), that.getPageIndex(), that.getPageSize());
     }
 
     public Type getTaskType() {
@@ -80,6 +87,24 @@ public class Task implements Serializable {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    @Nullable
+    public Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(@Nullable Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    @Nullable
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(@Nullable Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     /**
@@ -127,6 +152,9 @@ public class Task implements Serializable {
                 "taskType=" + taskType +
                 ", product=" + product +
                 ", dateOfReceipt=" + dateOfReceipt +
+                ", pageIndex=" + pageIndex +
+                ", pageSize=" + pageSize +
+                ", done=" + done +
                 '}';
     }
 }

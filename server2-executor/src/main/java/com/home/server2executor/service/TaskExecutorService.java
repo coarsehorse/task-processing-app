@@ -5,6 +5,7 @@ import com.home.server2executor.domain.Result;
 import com.home.server2executor.domain.Task;
 import com.home.server2executor.repositories.ProductRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,15 +50,23 @@ public class TaskExecutorService {
     }
 
     /**
-     * Get all products.
+     * Get all products in specified offset.
      *
-     * @param task task object will be used
-     *             to construct result.
-     * @return Result with list of products
+     * @param task task object with constraints.
+     *             If pageIndex or pageSize are null
+     *             then default values will be used.
+     * @return Result in <code>Page</code> object.
      * in <code>resultData</code> field.
      */
     private Result getAll(Task task) {
-        return new Result(task, productRepository.findAll(), true, false);
+
+        Integer pageIndex = task.getPageIndex() == null ? 0 : task.getPageIndex();
+        Integer pageSize = task.getPageSize() == null ? 5 : task.getPageSize();
+
+        return new Result(task,
+                productRepository.findAll(PageRequest.of(pageIndex, pageSize)),
+                true,
+                false);
     }
 
     /**
